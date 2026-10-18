@@ -1,0 +1,21 @@
+# Local environments, credentials and private media
+.venv/
+.tools/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+data/
+*.sqlite*
+*.jks
+*.keystore
+signing.properties
+local.properties
+.gradle/
+build/
+*.apk
+*.zip
+.DS_Store
+android/app/src/debug/res/raw/qa_certificate.pem
+artifacts/
+node_modules/
