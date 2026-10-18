@@ -1,0 +1,72 @@
+{
+  "android_version": "9",
+  "capture": "Android UiAutomation.takeScreenshot; local BlueStacks emulator",
+  "demo_data": true,
+  "queue_data": "fixed UI-state fixtures",
+  "apks": {
+    "app-debug.apk": "71e81801b0a948a5cc9a509c3b9ab880f08b13b5ff837b08cc066832682a3665",
+    "app-debug-androidTest.apk": "ab6456b87e193ebe712424892c7d215210d50f58764e7fb29b5c6e99ef291f49"
+  },
+  "screenshots": [
+    {
+      "file": "images/native/00-splash.png",
+      "sha256": "3374c307040b91cb69beeaa612568ea40e9188a1dad9644d9b6372faf6a270e8"
+    },
+    {
+      "file": "images/native/01-albums.png",
+      "sha256": "86a0a5972028d7b771eae2ceeff05980a2168e1bb1a3e25a32e0592a1e9ba05b"
+    },
+    {
+      "file": "images/native/01b-create-album.png",
+      "sha256": "4bd9f5842ad6f91864ed160e1fb8460f6b23bc0b3f89f09cee124d7de7b71a3d"
+    },
+    {
+      "file": "images/native/02-album-unlock.png",
+      "sha256": "54db2227f5980a3824ce0ba5c23c338f5a9a080da8f00a678477be02b0f3058a"
+    },
+    {
+      "file": "images/native/03-media-grid.png",
+      "sha256": "d37851bd04f293f555ffc25b571ac2ca5d1b18e83d359fba84514b37147dc9c8"
+    },
+    {
+      "file": "images/native/03b-batch-actions.png",
+      "sha256": "ef10387bdfd65cd5403bc9c077aaae51b6bf4775e9db8f327f869c2fd1e9b7ee"
+    },
+    {
+      "file": "images/native/04-image-loading.png",
+      "sha256": "ccf2a654e4f6f7db9fefd49cc9300bf949a24a241faa0c1d0b538ff902a0a8d2"
+    },
+    {
+      "file": "images/native/05-image-viewer.png",
+      "sha256": "9bcbffee53f4e67112967f545e5892d122b3cd77b7d4ed900fb52e71ca4f8d98"
+    },
+    {
+      "file": "images/native/06-video-player.png",
+      "sha256": "6f08dfdf897bd87dc552fa3622a0a3543c27166a48ef13fd98b74e5224b40689"
+    },
+    {
+      "file": "images/native/06b-video-quality.png",
+      "sha256": "d767159a2dafa15116c43ac120bdc486ae81c81c552d5b0949abccfb3f89597f"
+    },
+    {
+      "file": "images/native/07-upload-queue.png",
+      "sha256": "5c76112bf73646412bd61f2a10d1373ca4f29b69f474a69d198ed16c24cfa9ee"
+    },
+    {
+      "file": "images/native/08-settings.png",
+      "sha256": "3eff65e7d7f624bd7601c51de1a5f9eafc52cfbb992b90c966a088dbd8904156"
+    },
+    {
+      "file": "images/native/09-inbox.png",
+      "sha256": "673225cd70f1510618952a4c144309e8fcb51992fbda056f36413beb7b00bfcc"
+    },
+    {
+      "file": "images/native/09b-letter-detail.png",
+      "sha256": "3438c525a01cdb1d3d37090b609d806bd2118d94025af52726fa29ee716cf108"
+    }
+  ],
+  "instrumentation_passed": true,
+  "captured_on": "2026-10-18",
+  "resolution": "1080x1920",
+  "splash_capture": "adb exec-out screencap -p"
+}

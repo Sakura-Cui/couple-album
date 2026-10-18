@@ -1,6 +1,6 @@
 # 功能详解与源码入口
 
-本说明对照 1.2.26 当前代码整理。仓库内相对链接可以直接进入实现；界面截图的来源和验证范围见 [verification.md](verification.md)。
+本说明对照 1.2.26 当前代码整理。仓库内相对链接可以直接进入实现；实际界面见 [14 张功能截图](screenshots.md)，来源和验证范围见 [verification.md](verification.md)。
 
 ## 1. 设备邀请与共享空间
 

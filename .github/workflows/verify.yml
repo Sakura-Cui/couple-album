@@ -65,10 +65,11 @@ jobs:
             adb shell pm grant com.sakura.romance.debug android.permission.POST_NOTIFICATIONS
             adb shell pm grant com.sakura.romance.debug android.permission.ACCESS_COARSE_LOCATION
             adb shell am instrument -w -r -e class com.sakura.romance.ShowcaseFlowTest -e invite "$(cat .tools/showcase-invite)" com.sakura.romance.debug.test/androidx.test.runner.AndroidJUnitRunner | tee /tmp/showcase-instrumentation.log
+            grep -q 'OK (1 test)' /tmp/showcase-instrumentation.log
             mkdir -p showcase-capture
-            adb shell run-as com.sakura.romance.debug ls files | tr -d '\r' | grep '^showcase-.*\.png$' | while read name; do adb exec-out run-as com.sakura.romance.debug cat "files/$name" > "showcase-capture/$name"; done
+            adb pull /sdcard/Android/data/com.sakura.romance.debug/files/showcase/. showcase-capture/
             adb logcat -d -s AndroidRuntime > /tmp/showcase-crashes.log
-            test "$(find showcase-capture -name '*.png' | wc -l)" -ge 9
+            test "$(find showcase-capture -name '*.png' | wc -l)" -ge 13
       - uses: actions/upload-artifact@v4
         if: always()
         with:

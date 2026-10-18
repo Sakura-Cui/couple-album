@@ -17,7 +17,7 @@ from sakura.main import create_app
 from sakura.storage import Store
 from sakura.playback import PlaybackCopies
 
-data = ROOT / '.tools/showcase-data'
+data = Path(os.environ.get('SAKURA_SHOWCASE_DATA', ROOT / '.tools/showcase-data')).resolve()
 if data.exists():
     raise RuntimeError('Use a fresh showcase directory; existing data is never cleared automatically.')
 store = Store(data, reserve=0)
@@ -63,7 +63,7 @@ resources = ROOT / 'android/app/src/main/res/drawable-nodpi'
 upload(first, resources / 'sakura_romance_icon.png', 'image/png', '樱花与我们的日常.png')
 upload(first, resources / 'encrypted_album_cover.png', 'image/png', '珍藏的心动瞬间.png')
 upload(second, resources / 'sakura_romance_icon.png', 'image/png', '专属回忆.png')
-video = ROOT / '.tools/showcase-video.mp4'
+video = data / 'showcase-fixture.mp4'
 subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-f', 'lavfi', '-i',
                 'testsrc2=size=720x1280:rate=30', '-t', '6', '-c:v', 'libx264',
                 '-pix_fmt', 'yuv420p', '-movflags', '+faststart', str(video)], check=True)
@@ -71,6 +71,20 @@ mid = upload(first, video, 'video/mp4', '演示视频（合成测试画面）.mp
 with store.connect() as db:
     row = dict(db.execute('SELECT * FROM media WHERE id=?', (mid,)).fetchone())
 PlaybackCopies(data).write(row, 'original')
+copies = PlaybackCopies(data)
+bundle = copies.adaptive_path(mid)
+bundle.mkdir(parents=True, exist_ok=True)
+manifest = ['#EXTM3U', '#EXT-X-VERSION:3', '#EXT-X-INDEPENDENT-SEGMENTS']
+qualities = []
+for quality, label, width, height, bitrate in [('480', '流畅', 480, 854, 1000000), ('720', '高清', 720, 1280, 1900000)]:
+    subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-i', str(video),
+        '-vf', f'scale={width}:{height}', '-c:v', 'libx264', '-preset', 'ultrafast', '-pix_fmt', 'yuv420p',
+        '-g', '60', '-sc_threshold', '0', '-an', '-f', 'hls', '-hls_time', '2', '-hls_playlist_type', 'vod',
+        '-hls_segment_filename', str(bundle / (quality + '-%05d.ts')), str(bundle / (quality + '.m3u8'))], check=True)
+    manifest += [f'#EXT-X-STREAM-INF:BANDWIDTH={bitrate},RESOLUTION={width}x{height}', quality + '.m3u8']
+    qualities.append({'id': quality, 'label': label, 'width': width, 'height': height})
+(bundle / 'master.m3u8').write_text('\n'.join(manifest) + '\n')
+copies.write_adaptive(row, 'ready', qualities, original_compatible=True)
 client.put('/api/password', headers=auth, json={'new_password': 'showcase-only-password'}).raise_for_status()
 auth['X-Unlock-Token'] = client.post('/api/unlock', headers=auth, json={'password': 'showcase-only-password'}).json()['unlock_token']
 album('只属于我们的秘密', protected=True)
@@ -88,7 +102,7 @@ def letter():
     with store.connect() as db:
         device = db.execute("SELECT id FROM devices WHERE name='公开演示设备' AND active=1").fetchone()
     response = client.post('/api/notify', headers={'Authorization': 'Bearer ' + os.environ['SAKURA_NOTIFY_KEY']}, json={
-        'request_id': 'showcase-letter', 'device_id': device['id'],
+        'request_id': 'showcase-letter-' + device['id'], 'device_id': device['id'],
         'title': '把今天的小事讲给你听', 'text': '这是用于项目展示的合成消息。\n希望每一个普通的日子，都值得一起收藏。'})
     response.raise_for_status()
     return {'stored': True}

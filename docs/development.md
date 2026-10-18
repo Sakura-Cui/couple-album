@@ -66,9 +66,11 @@ python scripts/showcase_server.py
 
 服务绑定 127.0.0.1:18444，仅供测试。标准 Android 模拟器通过 https://10.0.2.2:18444 连接。不要把演示服务对公网开放，/showcase/* 路由仅用于隔离演示。
 
-专用模拟器安装 Debug 和 androidTest APK 后运行 ShowcaseFlowTest，通过参数传入 .tools/showcase-invite。测试使用真正 App UI 和本地 API，截图写入 Debug 应用私有 files 目录。上传队列的暂停/完成条目是测试注入的固定状态，不代表真实网络上传性能。
+专用模拟器安装 Debug 和 androidTest APK 后运行 ShowcaseFlowTest，通过参数传入 .tools/showcase-invite。测试使用真正 App UI 和本地 API，截图写入 Debug 应用外部专属目录 `/sdcard/Android/data/com.sakura.romance.debug/files/showcase/`，可用 `adb pull` 导出。上传队列的暂停/完成条目是测试注入的固定状态，不代表真实网络上传性能。
 
 完整自动化命令见 [.github/workflows/verify.yml](../.github/workflows/verify.yml)。工作流分开执行 Linux 后端测试、Android 单测和模拟器截图，只保存截图与测试报告，不上传邀请或数据目录。
+
+已拍摄的 14 张实际界面见 [截图图集](screenshots.md)，本地执行结果见 [验证记录](verification.md)。
 
 ## Loading 预览与测试
 

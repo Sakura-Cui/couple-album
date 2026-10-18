@@ -10,7 +10,7 @@ Android 情侣相册 · 原片珍藏 · 实况照片 · 断点续传 · 樱花 L
 
 Kotlin · Jetpack Compose · Media3 · FastAPI · SQLite · Docker
 
-[功能详解](docs/features.md) · [架构与源码分析](docs/architecture.md) · [本地运行](docs/development.md) · [验证记录](docs/verification.md) · [简历介绍](docs/resume.md)
+[实际界面图集](docs/screenshots.md) · [功能详解](docs/features.md) · [架构与源码分析](docs/architecture.md) · [本地运行](docs/development.md) · [验证记录](docs/verification.md) · [简历介绍](docs/resume.md)
 
 </div>
 
@@ -20,9 +20,23 @@ Couple Album（App 内名称 **SakuYao²**）是一套可以自行部署的 Andr
 
 当前源码版本 **1.2.26 / versionCode 51**，支持 **Android 8.0+**。现有产品模型为一个空间、最多三台设备，适合两个人及其中一人的备用手机。公开版保留核心代码、测试与动画设计源文件，使用示例地址和演示文案；不包含私人照片、线上数据库、签名私钥或生产凭据。
 
-## 界面与加载动画
+## App 实际界面
 
-下图及 GIF 使用 **App 当前打包的四套 Lottie JSON** 在浏览器中实际渲染并截图，不是重新绘制的效果图。浏览器展示页的进度是演示输入；Android 业务里使用真实进度。原生 Android 截图及其生成方法见[展示与验证记录](docs/verification.md)。
+以下为 **Android 9 模拟器中运行 Debug App 后直接截取的原生界面**。共 14 张，完整图片、功能说明和复现方式见 [界面图集](docs/screenshots.md)。
+
+| 相册与纪念日 | 私密相册解锁 | 图片浏览 |
+|:---:|:---:|:---:|
+| <img src="docs/images/native/01-albums.png" width="240" alt="相册首页"> | <img src="docs/images/native/02-album-unlock.png" width="240" alt="私密相册解锁"> | <img src="docs/images/native/05-image-viewer.png" width="240" alt="图片查看器"> |
+| **视频清晰度切换** | **上传队列与 Loading 进度条** | **空间设置** |
+| <img src="docs/images/native/06b-video-quality.png" width="240" alt="视频播放与清晰度菜单"> | <img src="docs/images/native/07-upload-queue.png" width="240" alt="上传队列45%进度与加载动画"> | <img src="docs/images/native/08-settings.png" width="240" alt="空间设置与设备"> |
+| **创建相册** | **批量整理媒体** | **悄悄话收件箱** |
+| <img src="docs/images/native/01b-create-album.png" width="240" alt="创建相册弹窗"> | <img src="docs/images/native/03b-batch-actions.png" width="240" alt="媒体多选与移动删除"> | <img src="docs/images/native/09-inbox.png" width="240" alt="悄悄话收件箱"> |
+
+截图使用通用插画、合成测试视频及演示设备/消息，本地演示后端提供实际 API。上传队列的 45% 暂停和已完成条目由测试注入固定 UI 状态，用于展示进度与操作，不代表网络性能测量。当前截图没有覆盖 Live Photo、真实推送和后台续传等所有场景；完整功能对应源码见 [功能详解](docs/features.md)。
+
+## 四套加载动画
+
+下面的图及 GIF 使用 **App 当前打包的四套 Lottie JSON** 在浏览器中渲染，展示各主题完整动作。它们与上面的 Android 原生界面截图分别标注；浏览器进度由演示输入控制。
 
 ![四种真实加载资源预览](docs/images/loading-overview.png)
 
