@@ -22,6 +22,16 @@ if data.exists():
     raise RuntimeError('Use a fresh showcase directory; existing data is never cleared automatically.')
 store = Store(data, reserve=0)
 app = create_app(store)
+image_delay = 0.0
+
+
+@app.middleware('http')
+async def slow_demo_images(request, call_next):
+    if image_delay and request.url.path.endswith('/content'):
+        await asyncio.sleep(image_delay)
+    return await call_next(request)
+
+
 client = TestClient(app)
 token = client.post('/api/bind', json={'invite': store.invite(), 'name': '演示内容准备'}).json()['token']
 auth = {'Authorization': 'Bearer ' + token}
@@ -65,16 +75,6 @@ client.put('/api/password', headers=auth, json={'new_password': 'showcase-only-p
 auth['X-Unlock-Token'] = client.post('/api/unlock', headers=auth, json={'password': 'showcase-only-password'}).json()['unlock_token']
 album('只属于我们的秘密', protected=True)
 client.put('/api/profile', headers=auth, json={'signature': '把平凡的日子，收藏成我们的故事'}).raise_for_status()
-
-image_delay = 0.0
-
-
-@app.middleware('http')
-async def slow_demo_images(request, call_next):
-    if image_delay and request.url.path.endswith('/content'):
-        await asyncio.sleep(image_delay)
-    return await call_next(request)
-
 
 @app.post('/showcase/delay')
 def delay(seconds: float = 0):
