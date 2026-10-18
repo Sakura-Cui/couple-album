@@ -1,0 +1,32 @@
+{
+  "note": "v1 通用款人物复用记录；第三版新图集见 delivery-prompts.json",
+  "originalRecord": {
+    "method": "Built-in image_gen; character sprites generated independently from approved concept references; facial variants edited from the same girl master. Tracks and effects authored as editable SVG, not cropped from concept art.",
+    "sprites": {
+      "common": "Use case: identity-preserve. PRODUCTION APP SPRITE, one single character cutout only. Use attached approved couple concept as the EXACT model sheet for face, hair silhouette, clothing, chibi proportions, delicate linework, shading, colors, and subtle 3D sticker volume. Redraw the requested character as an independent layer from scratch. Do NOT include any part of progress bar or the other character. TRUE transparent RGBA canvas, fully transparent empty pixels, clean soft antialiasing at edges, no backdrop, no checkerboard, no ground shadow, no halo, no ambient glow outside silhouette, no white sticker outline, no text, logos, effects, hearts, petals or other objects. One full-body adult character in premium Korean/Japanese chibi rendering, large rounded head and small body, portrait canvas with generous 10 percent transparent safe space all around, head and shoes fully visible. All sprite variants must have identical character proportions and scale. ",
+      "jobs": [
+        {
+          "name": "boy",
+          "prompt": "ONLY THE BOY. Fluffy short BLACK hair, round thin silver wire glasses fully visible, black short-sleeve collared polo with small buttons, ivory trousers, off-white sneakers. Three-quarter view facing RIGHT, both eyes completely closed, small lips puckered toward right. Shy sweet expression, light blush. Standing with feet near together, hands held behind his back, slight 5 degree forward lean toward right; do not fly, do not lie horizontally, no running. His mouth near the right edge of face must be unobstructed so it can touch a separate girl's cheek. Keep shape faithful to boy in reference."
+        },
+        {
+          "name": "girl-wait",
+          "prompt": "ONLY THE GIRL in waiting pose. Warm chestnut brown side-parted medium-long hair with large soft waves and the signature single long lock framing her LEFT cheek. White ivory lace camisole dress, thin straps, short delicate lace hem, off-white shoes with tiny warm gold bow. Three-quarter frontal view angled slightly LEFT, open brown eyes glancing shyly left, small closed smiling mouth, soft blush, hands clasped at upper chest. Stand upright feet together. Keep her LEFT cheek (viewer left) clear and accessible for boy to kiss. Match the reference model precisely."
+        },
+        {
+          "name": "girl-complete",
+          "prompt": "ONLY THE GIRL in cheek-kiss completion pose, without the boy. Warm chestnut brown side-parted medium-long hair with large soft waves and signature single long lock framing her face. Ivory white lace camisole dress, thin straps, short delicate lace hem, off-white shoes with tiny warm gold bow. Three-quarter frontal view angled slightly LEFT, BOTH EYES CLOSED in happy soft curves, little closed smiling mouth, strongly flushed rosy cheeks. Hands clasped at upper chest, stand upright feet together, same pose and proportions as reference waiting girl. Her LEFT cheek (viewer left) must remain exposed and accessible to kiss. No puckered lips for this variant. No heart."
+        },
+        {
+          "name": "girl-pucker",
+          "prompt": "ONLY THE GIRL, matching reference VIDEO facing boy pose. Warm chestnut brown side-parted medium-long hair with large soft waves and signature single lock beside face. Ivory white lace camisole dress, thin straps, short delicate lace hem, off-white shoes with tiny warm gold bow. Three-quarter view facing LEFT, BOTH EYES CLOSED and small lips PUCKERED toward LEFT, cheeks rosy. Hands held gently behind her back, stand feet near together with slight 5 degree lean toward LEFT, do not fly. Mouth near left edge of face unobstructed for two separate sprites to meet in middle. Match reference model precisely."
+        }
+      ]
+    },
+    "expressionEdits": {
+      "smile": "Change only eyes to closed smiling curved lids and slightly deepen blush. Preserve hair, dress, pose, canvas and alpha.",
+      "kiss": "Change only eyes to closed and mouth to leftward pucker. Preserve remaining artwork."
+    },
+    "contactPose": "Exact same character styling; side profile facing partner with projecting puckered lips at silhouette edge; preserve standing full body and transparent alpha."
+  }
+}

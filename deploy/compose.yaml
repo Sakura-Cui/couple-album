@@ -1,0 +1,94 @@
+name: sakura-romance
+services:
+  api:
+    image: sakura-romance-api:${SAKURA_VERSION:-1.2.26}
+    command: [uvicorn, sakura.main:create_app, --factory, --host, 0.0.0.0, --port, "8000", --workers, "1", --limit-concurrency, "32", --no-access-log]
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpus: 0.50
+    pids_limit: 64
+    env_file: .env
+    environment:
+      SAKURA_DATA: /data
+      # This deployment uses server disk even if an old env file still says cos.
+      SAKURA_STORAGE: local
+    volumes:
+      - ${SAKURA_DATA_DIR:?Set a dedicated absolute data path}:/data
+      - ${SAKURA_BACKUP_DIR:?Set a separate absolute backup path}:/backups
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    expose: ["8000"]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health',timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"
+  playback:
+    image: sakura-romance-api:${SAKURA_VERSION:-1.2.26}
+    command: [python, -m, sakura.playback]
+    restart: unless-stopped
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 1g
+    memswap_limit: 1g
+    cpus: 1.0
+    pids_limit: 64
+    env_file: .env
+    environment:
+      SAKURA_DATA: /data
+      SAKURA_STORAGE: local
+    volumes:
+      - ${SAKURA_DATA_DIR:?Set a dedicated absolute data path}:/data
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    network_mode: none
+    depends_on:
+      api:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"
+  tls:
+    image: nginx:1.28-alpine
+    restart: unless-stopped
+    user: "10001:10001"
+    entrypoint: [nginx, -g, "daemon off;"]
+    depends_on:
+      api:
+        condition: service_healthy
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 64m
+    memswap_limit: 64m
+    cpus: 0.15
+    pids_limit: 32
+    ports:
+      - "${SAKURA_BIND_IP:-127.0.0.1}:${SAKURA_HTTPS_PORT:-9443}:9443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${SAKURA_TLS_DIR:?Set a dedicated TLS directory}:/certs:ro
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"

@@ -1,0 +1,42 @@
+{
+  "video-boy": {
+    "width": 711,
+    "height": 500
+  },
+  "video-girl": {
+    "width": 751,
+    "height": 523
+  },
+  "image-boy": {
+    "width": 379,
+    "height": 509
+  },
+  "image-boy-complete": {
+    "width": 326,
+    "height": 492
+  },
+  "image-girl-wait": {
+    "width": 353,
+    "height": 504
+  },
+  "image-girl-smile": {
+    "width": 356,
+    "height": 504
+  },
+  "queue-boy": {
+    "width": 433,
+    "height": 509
+  },
+  "queue-cart": {
+    "width": 438,
+    "height": 437
+  },
+  "queue-girl-wait": {
+    "width": 374,
+    "height": 506
+  },
+  "queue-girl-smile": {
+    "width": 374,
+    "height": 498
+  }
+}

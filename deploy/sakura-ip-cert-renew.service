@@ -1,0 +1,9 @@
+[Unit]
+Description=Renew SakuYao HTTPS IP certificate
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sakura-romance/ops/renew-ip-cert.sh
+TimeoutStartSec=180

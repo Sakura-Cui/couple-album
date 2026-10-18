@@ -1,0 +1,12 @@
+.venv
+.tools
+android
+artifacts
+.git
+**/__pycache__
+**/.pytest_cache
+**/.env
+**/data
+**/*.jks
+**/*.keystore
+docs

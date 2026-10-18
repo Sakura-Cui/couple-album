@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Couple Album · Loading Showcase</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fff5f8;color:#553746;font:15px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{width:1040px;max-width:95%;margin:44px auto}header{display:flex;justify-content:space-between;align-items:end;margin-bottom:26px}h1{font-size:34px;line-height:1.25;margin:6px 0 10px;letter-spacing:-1px}header p{margin:0;color:#9a7789}.eyebrow{color:#ab5d7e;font-size:12px;letter-spacing:3px}.badge{background:#f4e1eb;padding:8px 16px;border-radius:30px;color:#8d526f;font-size:12px}.controls{background:white;padding:16px 20px;border-radius:18px;display:flex;align-items:center;gap:16px;border:1px solid #efdae4;margin-bottom:22px}input{accent-color:#bf6b91;width:260px}button{background:white;color:#8b4a6d;border:1px solid #e5c8d8;padding:7px 15px;border-radius:9px;cursor:pointer}.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}section{background:#fff;border:1px solid #efdde7;border-radius:22px;padding:22px 24px}h2{font-size:19px;margin:0}section p{font-size:13px;color:#9d7d8e;margin:4px 0 16px}.stage{width:100%;height:auto;aspect-ratio:3.2;background:#fff;overflow:hidden}footer{margin-top:22px;color:#a08394;font-size:12px}output{font-variant-numeric:tabular-nums;width:50px}body[data-dark="true"] .stage{background:#2d2735;border-radius:12px}
+</style>
+<main>
+<header><div><div class="eyebrow">COUPLE ALBUM · SAKUYAO²</div><h1>让每一次等待，都有温度</h1><p>四种业务场景 · 同一对恋人 · 实际 App Lottie 资源渲染</p></div><span class="badge">源码版本 1.2.26</span></header>
+<div class="controls"><label for="progress">演示进度</label><input id="progress" type="range" min="0" max="100" value="50"><output id="value">50%</output><button id="done">完成动画</button><button id="reset">重置</button><button id="dark">深色背景</button></div>
+<div class="cards">
+<section><h2>01 / 视频加载</h2><p>胶片进度轨道，双向靠近，完成后亲吻</p><div class="stage" id="video"></div></section>
+<section><h2>02 / 图片加载</h2><p>八张照片逐一显色，成功后触发完成动作</p><div class="stage" id="image"></div></section>
+<section><h2>03 / 上传队列</h2><p>七颗爱心按进度点亮，推着回忆向你靠近</p><div class="stage" id="queue"></div></section>
+<section><h2>04 / 通用加载</h2><p>毛玻璃胶囊轨道，樱花节点随进度移动</p><div class="stage" id="app"></div></section>
+</div>
+<footer>展示页使用 android/app/src/main/assets/loading 中的当前资源。此处百分比为可调演示输入；App 内使用真实业务进度。100% 等待态与业务完成态独立。</footer>
+</main>
+<script src="../../design/loading/preview/vendor/lottie.min.js"></script>
+<script>
+window.animations={};window.readyCount=0;window.previewErrors=[];
+Promise.all(['video','image','queue','app'].map(async name=>{
+ const data=await fetch('../../android/app/src/main/assets/loading/'+name+'.json').then(r=>r.json());
+ const animation=lottie.loadAnimation({container:document.getElementById(name),renderer:'svg',loop:false,autoplay:false,animationData:data});
+ animation.addEventListener('DOMLoaded',()=>{animation.goToAndStop(50,true);readyCount++});
+ animation.addEventListener('data_failed',e=>previewErrors.push(String(e)));
+ animations[name]=animation;
+}));
+window.seek=frame=>{for(const animation of Object.values(animations))animation.goToAndStop(frame,true)};
+const progress=document.getElementById('progress');
+progress.oninput=()=>{document.getElementById('value').textContent=progress.value+'%';seek(Number(progress.value))};
+document.getElementById('reset').onclick=()=>{progress.value=0;progress.oninput()};
+document.getElementById('dark').onclick=()=>document.body.dataset.dark=document.body.dataset.dark!=='true';
+document.getElementById('done').onclick=()=>{progress.value=100;document.getElementById('value').textContent='完成';const start=performance.now();function tick(now){seek(100+Math.min(24,(now-start)/800*24));if(now-start<800)requestAnimationFrame(tick)}requestAnimationFrame(tick)};
+</script>
+</html>
